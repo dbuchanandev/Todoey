@@ -7,8 +7,13 @@
 //
 
 import UIKit
+import CoreData
 
 class CategoryTableViewController: UITableViewController {
+    
+    var categoryArray: [Category] = []
+    
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -18,6 +23,9 @@ class CategoryTableViewController: UITableViewController {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        
+        loadCategories()
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -29,23 +37,26 @@ class CategoryTableViewController: UITableViewController {
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 0
+        return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 0
+        return categoryArray.count
     }
 
-    /*
+    //MARK: TableView Datasource Methods
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "categoryCell", for: indexPath)
 
         // Configure the cell...
+        let category = categoryArray[indexPath.row]
+        
+        cell.textLabel?.text = category.name
 
         return cell
     }
-    */
+ 
 
     /*
     // Override to support conditional editing of the table view.
@@ -91,5 +102,57 @@ class CategoryTableViewController: UITableViewController {
         // Pass the selected object to the new view controller.
     }
     */
+    
+    @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
+        
+        var textField = UITextField()
+        
+        let alert = UIAlertController(title: "Add New Category", message: "", preferredStyle: .alert)
+        
+        let action = UIAlertAction(title: "Add Category", style: .default) { (action) in
+            //what will happen once the user taps add item button on UIAlert
+            
+            let newCategory = Category(context: self.context)
+            newCategory.name = textField.text!
+            self.categoryArray.append(newCategory)
+            
+            self.saveCategories()
+        }
+        alert.addTextField { (alertTextField) in
+            alertTextField.placeholder = "Create new category"
+            textField = alertTextField
+        }
+        
+        alert.addAction(action)
+        present(alert, animated: true, completion: nil)
+        
+    }
+    
+    //MARK: TableView Delegate Methods
+    //later
+    
+    //MARK: Data Manipulation Methods
+    func saveCategories() {
+        
+        do {
+            try context.save()
+        } catch {
+            print("Error saving categories: \(error)")
+        }
+        
+        tableView.reloadData()
+    }
+    
+    func loadCategories(with request : NSFetchRequest<Category> = Category.fetchRequest()) {
+        
+        do {
+            categoryArray = try context.fetch(request)
+        } catch {
+            print("Error loading categories data: \(error)")
+        }
+        tableView.reloadData()
+    }
 
+    
+    
 }

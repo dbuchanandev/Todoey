@@ -59,10 +59,6 @@ class TodoListViewController: UITableViewController {
             tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
         }
         
-        /*this is not efficient. I'd rather just change the check mark when I set the property. It should always match.
-        Unrealistic that multiple rows will show data from the exact same object */
-        //tableView.reloadData()
-        
         saveItems()
     }
     
