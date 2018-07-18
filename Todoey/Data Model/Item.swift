@@ -8,7 +8,7 @@
 
 import Foundation
 
-class Item {
+class Item: Codable {
     var title: String
     var done: Bool = false
     
@@ -16,6 +16,7 @@ class Item {
         self.title = title
     }
     
+    //Remove this later. Just for lazy testing
     convenience init() {
         self.init(title: "New Item")
     }
