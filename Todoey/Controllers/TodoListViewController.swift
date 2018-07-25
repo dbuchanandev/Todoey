@@ -43,7 +43,16 @@ class TodoListViewController: UITableViewController {
             
             //Ternary operator
             cell.accessoryType = item.done ? .checkmark : .none
+            
+            //set strikethrough and change the color to grey if the item is done
+            if item.done {
+                cell.textLabel?.attributedText = NSAttributedString(string: item.title, attributes: [NSAttributedStringKey.foregroundColor : UIColor.gray, NSAttributedStringKey.strikethroughStyle: 1])
+            } else {
+                // would be better to set a global variable for color to use here
+                cell.textLabel?.attributedText = NSAttributedString(string: item.title, attributes: [NSAttributedStringKey.foregroundColor : UIColor.black, NSAttributedStringKey.strikethroughStyle: 0])
+            }
         }
+        
 
         return cell
     }
@@ -131,7 +140,7 @@ class TodoListViewController: UITableViewController {
     
     func loadItems() {
         
-        todoItems = selectedCategory?.items.sorted(byKeyPath: "title", ascending: true)
+        todoItems = selectedCategory?.items.sorted(byKeyPath: "dateCreated", ascending: true)
         
         tableView.reloadData()
     }
