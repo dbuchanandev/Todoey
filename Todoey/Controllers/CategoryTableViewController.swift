@@ -58,28 +58,28 @@ class CategoryTableViewController: UITableViewController {
         return cell
     }
     
-    //Swipe to delete
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
-        return .delete
-    }
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            if let item = categories?[indexPath.row] {
-                do {
-                    try realm.write {
-                        realm.delete(item)
-                    }
-                } catch {
-                    print("Error deleting category: \(error)")
-                }
-            }
-            
-            tableView.reloadData()
-        }
-    }
+//    //Swipe to delete
+//    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+//        return true
+//    }
+//    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
+//        return .delete
+//    }
+//    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+//        if editingStyle == .delete {
+//            if let item = categories?[indexPath.row] {
+//                do {
+//                    try realm.write {
+//                        realm.delete(item)
+//                    }
+//                } catch {
+//                    print("Error deleting category: \(error)")
+//                }
+//            }
+//            
+//            tableView.reloadData()
+//        }
+//    }
  
 
     /*

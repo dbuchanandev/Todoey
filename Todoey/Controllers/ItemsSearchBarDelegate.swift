@@ -19,7 +19,7 @@ extension TodoListViewController: UISearchBarDelegate {
             //filter by title matching search text. Sort by date created
             // Still call loadItems() first so that the filter is set again as characters are removed from search
             loadItems()
-            todoItems = todoItems?.filter("title CONTAINS[cd] %@", searchBar.text!).sorted(byKeyPath: "dateCreated", ascending: true)
+            todoItems = todoItems?.filter("title CONTAINS[cd] %@", searchBar.text!).sorted(byKeyPath: "title", ascending: true)
             //Still have to tell the table to reload
             tableView.reloadData()
         }
