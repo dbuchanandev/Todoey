@@ -134,7 +134,7 @@ class CategoryTableViewController: UITableViewController {
     
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
         
-        addNewCateogry()
+        addNewCategory()
         
     }
     
@@ -144,7 +144,7 @@ class CategoryTableViewController: UITableViewController {
         //If no category exist and a row is tapped, show alert to add a new category
         //else, segue to the selected category list
         if categories?.count == 0 {
-            addNewCateogry()
+            addNewCategory()
         } else {
             performSegue(withIdentifier: "goToItems", sender: self)
         }
@@ -181,7 +181,7 @@ class CategoryTableViewController: UITableViewController {
         tableView.reloadData()
     }
     
-    func addNewCateogry() {
+    func addNewCategory() {
         var textField = UITextField()
         
         let alert = UIAlertController(title: "Add New Category", message: "", preferredStyle: .alert)
@@ -212,7 +212,30 @@ class CategoryTableViewController: UITableViewController {
 //MARK: - Swipe Cell Delegate Methods
 
 extension CategoryTableViewController: SwipeTableViewCellDelegate {
+    
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
         
+        guard orientation == .right else { return nil}
+        
+        let deleteAction = SwipeAction(style: .destructive, title: "Delete") { (action, indexPath) in
+            // handle action by updating model with deletion
+            if let category = self.categories?[indexPath.row] {
+                do {
+                    try self.realm.write {
+                    self.realm.delete(category)
+                    }
+                } catch {
+                    print("Error deleting category: \(error)")
+                }
+            }
+            
+            tableView.reloadData()
+        }
+        
+        //customize the action appearance
+        //deleteAction.image = UIImage(named: "delete")
+        
+        return [deleteAction]
     }
+    
 }
