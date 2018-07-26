@@ -12,16 +12,13 @@ import RealmSwift
 extension TodoListViewController: UISearchBarDelegate {
     
     func performSearch(_ searchBar: UISearchBar) {
-        
         if searchBar.text?.count == 0 {
             //load all items if search is empty
             loadItems()
-            //and dismiss the keyboard
-            DispatchQueue.main.async {
-                searchBar.resignFirstResponder()
-            }
         } else {
             //filter by title matching search text. Sort by date created
+            // Still call loadItems() first so that the filter is set again as characters are removed from search
+            loadItems()
             todoItems = todoItems?.filter("title CONTAINS[cd] %@", searchBar.text!).sorted(byKeyPath: "dateCreated", ascending: true)
             //Still have to tell the table to reload
             tableView.reloadData()
@@ -40,10 +37,20 @@ extension TodoListViewController: UISearchBarDelegate {
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        performSearch(searchBar)
+        //ideally the search has already completed via textDidChange
+        //dismiss the keyboard
+        DispatchQueue.main.async {
+            searchBar.resignFirstResponder()
+        }
     }
+    
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        performSearch(searchBar)
+        //dismiss the keyboard
+        DispatchQueue.main.async {
+            searchBar.resignFirstResponder()
+        }
+        //reload all items
+        loadItems()
     }
     
 }
