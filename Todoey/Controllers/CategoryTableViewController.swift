@@ -23,6 +23,8 @@ class CategoryTableViewController: UITableViewController {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        //Add a footer view to hide extra cells
+        self.tableView.tableFooterView = UIView()
         
         loadCategories()
         
@@ -36,12 +38,12 @@ class CategoryTableViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
+        // return the number of sections
         return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
+        // return the number of rows
         return categories?.count ?? 1
     }
 
@@ -50,9 +52,33 @@ class CategoryTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "categoryCell", for: indexPath)
 
         // Configure the cell...
-        cell.textLabel?.text = categories?[indexPath.row].name
+        //If nil, "No Categories Added Yet"
+        cell.textLabel?.text = categories?[indexPath.row].name ?? "No Categories Added Yet"
 
         return cell
+    }
+    
+    //Swipe to delete
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
+        return .delete
+    }
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            if let item = categories?[indexPath.row] {
+                do {
+                    try realm.write {
+                        realm.delete(item)
+                    }
+                } catch {
+                    print("Error deleting category: \(error)")
+                }
+            }
+            
+            tableView.reloadData()
+        }
     }
  
 
@@ -103,32 +129,20 @@ class CategoryTableViewController: UITableViewController {
     
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
         
-        var textField = UITextField()
-        
-        let alert = UIAlertController(title: "Add New Category", message: "", preferredStyle: .alert)
-        
-        let action = UIAlertAction(title: "Add Category", style: .default) { (action) in
-            //what will happen once the user taps add item button on UIAlert
-            
-            let newCategory = Category()
-            newCategory.name = textField.text!
-            
-            self.save(category: newCategory)
-        }
-        alert.addTextField { (alertTextField) in
-            alertTextField.placeholder = "Create new category"
-            textField = alertTextField
-        }
-        
-        alert.addAction(action)
-        present(alert, animated: true, completion: nil)
+        addNewCateogry()
         
     }
     
     //MARK: TableView Delegate Methods
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        performSegue(withIdentifier: "goToItems", sender: self)
+
+        //If no category exist and a row is tapped, show alert to add a new category
+        //else, segue to the selected category list
+        if categories?.count == 0 {
+            addNewCateogry()
+        } else {
+            performSegue(withIdentifier: "goToItems", sender: self)
+        }
         
     }
     
@@ -160,6 +174,32 @@ class CategoryTableViewController: UITableViewController {
         categories = realm.objects(Category.self)
         
         tableView.reloadData()
+    }
+    
+    func addNewCateogry() {
+        var textField = UITextField()
+        
+        let alert = UIAlertController(title: "Add New Category", message: "", preferredStyle: .alert)
+        
+        let action = UIAlertAction(title: "Add Category", style: .default) { (action) in
+            //what will happen once the user taps add item button on UIAlert
+            
+            let newCategory = Category()
+            newCategory.name = textField.text!
+            
+            self.save(category: newCategory)
+        }
+        alert.addTextField { (alertTextField) in
+            alertTextField.placeholder = "Create new category"
+            textField = alertTextField
+        }
+        
+        alert.addAction(action)
+        present(alert, animated: true, completion: nil)
+        //needs cancel button too
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (cancelAction) in
+            alert.dismiss(animated: true, completion: nil)
+        }))
     }
 
     
