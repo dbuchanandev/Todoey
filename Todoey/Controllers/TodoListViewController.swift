@@ -241,7 +241,8 @@ extension TodoListViewController: SwipeTableViewCellDelegate {
                 }
             }
             
-            tableView.reloadData()
+            //tableView.reloadData()
+            //editActionsOptionsForRowAt takes care of the table reload
         }
         
         //customize the action appearance
