@@ -48,6 +48,9 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="navigationBar" destination="FQD-hz-RAX" id="LyB-Vv-Viq"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="h1u-NY-am3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

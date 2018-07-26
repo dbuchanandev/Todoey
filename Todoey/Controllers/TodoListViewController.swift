@@ -27,8 +27,12 @@ class TodoListViewController: UITableViewController {
         // Do any additional setup after loading the view, typically from a nib.
         //Add a footer view to hide extra cells
         self.tableView.tableFooterView = UIView()
-        
+        //set nav bar title to match selected category
+        self.navigationBar.title = selectedCategory?.name
     }
+    
+    @IBOutlet weak var navigationBar: UINavigationItem!
+    
 
 //    override func didReceiveMemoryWarning() {
 //        super.didReceiveMemoryWarning()
