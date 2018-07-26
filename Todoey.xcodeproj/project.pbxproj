@@ -13,7 +13,6 @@
 		F876878320F9ADF700E60D61 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F876878120F9ADF700E60D61 /* Main.storyboard */; };
 		F876878520F9ADF900E60D61 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F876878420F9ADF900E60D61 /* Assets.xcassets */; };
 		F876878820F9ADF900E60D61 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F876878620F9ADF900E60D61 /* LaunchScreen.storyboard */; };
-		F88FD49C20FFBBD8004A41C1 /* ItemsSearchBarDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88FD49B20FFBBD8004A41C1 /* ItemsSearchBarDelegate.swift */; };
 		F88FD4A020FFCA1E004A41C1 /* CategoryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88FD49F20FFCA1E004A41C1 /* CategoryTableViewController.swift */; };
 		F8F693B0210566070077E31C /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F693AF210566070077E31C /* Item.swift */; };
 		F8F693B22105660F0077E31C /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F693B12105660F0077E31C /* Category.swift */; };
@@ -30,7 +29,6 @@
 		F876878420F9ADF900E60D61 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F876878720F9ADF900E60D61 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F876878920F9ADF900E60D61 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		F88FD49B20FFBBD8004A41C1 /* ItemsSearchBarDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsSearchBarDelegate.swift; sourceTree = "<group>"; };
 		F88FD49F20FFCA1E004A41C1 /* CategoryTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryTableViewController.swift; sourceTree = "<group>"; };
 		F8F693AF210566070077E31C /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		F8F693B12105660F0077E31C /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
@@ -102,7 +100,6 @@
 			children = (
 				F88FD49F20FFCA1E004A41C1 /* CategoryTableViewController.swift */,
 				F876877F20F9ADF700E60D61 /* TodoListViewController.swift */,
-				F88FD49B20FFBBD8004A41C1 /* ItemsSearchBarDelegate.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -248,7 +245,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F88FD49C20FFBBD8004A41C1 /* ItemsSearchBarDelegate.swift in Sources */,
 				F876878020F9ADF700E60D61 /* TodoListViewController.swift in Sources */,
 				F88FD4A020FFCA1E004A41C1 /* CategoryTableViewController.swift in Sources */,
 				F8F693B0210566070077E31C /* Item.swift in Sources */,

@@ -8,8 +8,10 @@
 
 import UIKit
 import RealmSwift
+import SwipeCellKit
 
 class CategoryTableViewController: UITableViewController {
+    
     
     let realm = try! Realm()
     
@@ -49,8 +51,11 @@ class CategoryTableViewController: UITableViewController {
 
     //MARK: TableView Datasource Methods
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "categoryCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "categoryCell", for: indexPath) as! SwipeTableViewCell
 
+        //SwipeTableViewCell delegate
+        cell.delegate = self
+        
         // Configure the cell...
         //If nil, "No Categories Added Yet"
         cell.textLabel?.text = categories?[indexPath.row].name ?? "No Categories Added Yet"
@@ -201,7 +206,13 @@ class CategoryTableViewController: UITableViewController {
             alert.dismiss(animated: true, completion: nil)
         }))
     }
+    
+}
 
-    
-    
+//MARK: - Swipe Cell Delegate Methods
+
+extension CategoryTableViewController: SwipeTableViewCellDelegate {
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
+        
+    }
 }
