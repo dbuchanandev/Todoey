@@ -8,9 +8,8 @@
 
 import UIKit
 import RealmSwift
-import SwipeCellKit
 
-class TodoListViewController: UITableViewController {
+class TodoListViewController: SwipeTableViewController {
 
     var todoItems: Results<Item>?
     
@@ -49,7 +48,7 @@ class TodoListViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ToDoItemCell", for: indexPath) as! SwipeTableViewCell
+        let cell = super.tableView(tableView, cellForRowAt: indexPath)
         
         if let item = todoItems?[indexPath.row] {
             //If nil, "No Categories Added Yet"
@@ -77,9 +76,7 @@ class TodoListViewController: UITableViewController {
         
         //If no items exist and a row is tapped, show alert to add new items
         //else, modify the done status of the selected item
-        if todoItems?.count == 0 {
-            addNewItem()
-        } else if let item = todoItems?[indexPath.row] {
+        if let item = todoItems?[indexPath.row] {
             do {
                 try realm.write {
                     item.done = !item.done
@@ -92,29 +89,6 @@ class TodoListViewController: UITableViewController {
         tableView.reloadData()
         
     }
-    
-//    //Swipe to delete
-//    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-//        return true
-//    }
-//    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
-//        return .delete
-//    }
-//    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-//        if editingStyle == .delete {
-//            if let item = todoItems?[indexPath.row] {
-//                do {
-//                    try realm.write {
-//                        realm.delete(item)
-//                    }
-//                } catch {
-//                    print("Error deleting item: \(error)")
-//                }
-//            }
-//            
-//            tableView.reloadData()
-//        }
-//    }
     
     //MARK: - Add New Items
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
@@ -130,6 +104,20 @@ class TodoListViewController: UITableViewController {
         todoItems = selectedCategory?.items.sorted(byKeyPath: "dateCreated", ascending: true)
         
         tableView.reloadData()
+    }
+    
+    //Swipe to delete
+    override func updateModel(at indexPath: IndexPath) {
+        super.updateModel(at: indexPath)
+        if let item = self.todoItems?[indexPath.row] {
+            do {
+                try self.realm.write {
+                    self.realm.delete(item)
+                }
+            } catch {
+                print("Error deleting item: \(error)")
+            }
+        }
     }
     
     func addNewItem() {
@@ -221,42 +209,5 @@ extension TodoListViewController: UISearchBarDelegate {
     
 }
 
-//MARK: - Swipe Cell Delegate Methods
 
-extension TodoListViewController: SwipeTableViewCellDelegate {
-    
-    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
-        
-        guard orientation == .right else { return nil}
-        
-        let deleteAction = SwipeAction(style: .destructive, title: "Delete") { (action, indexPath) in
-            // handle action by updating model with deletion
-            if let item = self.todoItems?[indexPath.row] {
-                do {
-                    try self.realm.write {
-                        self.realm.delete(item)
-                    }
-                } catch {
-                    print("Error deleting item: \(error)")
-                }
-            }
-            
-            //tableView.reloadData()
-            //editActionsOptionsForRowAt takes care of the table reload
-        }
-        
-        //customize the action appearance
-        //deleteAction.image = UIImage(named: "delete")
-        
-        return [deleteAction]
-    }
-    
-    //continue dragging to delete
-    func tableView(_ tableView: UITableView, editActionsOptionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeOptions {
-        var options = SwipeTableOptions()
-        options.expansionStyle = .destructive
-        options.transitionStyle = .border
-        return options
-    }
-}
 
