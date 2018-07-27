@@ -8,6 +8,7 @@
 
 import UIKit
 import RealmSwift
+import ChameleonFramework
 
 class TodoListViewController: SwipeTableViewController {
 
@@ -28,6 +29,9 @@ class TodoListViewController: SwipeTableViewController {
         self.tableView.tableFooterView = UIView()
         //set nav bar title to match selected category
         self.navigationBar.title = selectedCategory?.name
+        
+        //set nav items color
+
     }
     
     @IBOutlet weak var navigationBar: UINavigationItem!
@@ -57,16 +61,19 @@ class TodoListViewController: SwipeTableViewController {
             //Ternary operator
             cell.accessoryType = item.done ? .checkmark : .none
             
-            //set strikethrough and change the color to grey if the item is done
-            if item.done {
-                cell.textLabel?.attributedText = NSAttributedString(string: item.title, attributes: [NSAttributedStringKey.foregroundColor : UIColor.gray, NSAttributedStringKey.strikethroughStyle: 1])
-            } else {
-                // would be better to set a global variable for color to use here
-                cell.textLabel?.attributedText = NSAttributedString(string: item.title, attributes: [NSAttributedStringKey.foregroundColor : UIColor.black, NSAttributedStringKey.strikethroughStyle: 0])
+            //Cell background color gets progressively darker
+            if let cellColor = UIColor(hexString: (selectedCategory?.hexColor)!)?.darken(byPercentage: CGFloat(indexPath.row) / CGFloat(todoItems!.count)) {
+                cell.backgroundColor = cellColor
+                //set strikethrough and change the color to grey if the item is done
+                if item.done {
+                    cell.textLabel?.attributedText = NSAttributedString(string: item.title, attributes: [NSAttributedStringKey.foregroundColor : UIColor.gray, NSAttributedStringKey.strikethroughStyle: 1])
+                } else {
+                    // ContrastColorOf used for cell text color
+                    cell.textLabel?.attributedText = NSAttributedString(string: item.title, attributes: [NSAttributedStringKey.foregroundColor : ContrastColorOf(cellColor, returnFlat: true), NSAttributedStringKey.strikethroughStyle: 0])
+                }
             }
         }
         
-
         return cell
     }
     
@@ -90,7 +97,9 @@ class TodoListViewController: SwipeTableViewController {
         
     }
     
+    
     //MARK: - Add New Items
+    
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
         
         addNewItem()

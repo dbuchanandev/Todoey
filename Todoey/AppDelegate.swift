@@ -7,16 +7,20 @@
 //
 
 import UIKit
+import ChameleonFramework
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    
+    
 
     //var itemArray : [Item] = []
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        [Chameleon .setGlobalThemeUsingPrimaryColor(FlatSkyBlue(), with: UIContentStyle.contrast)];
         
         return true
     }

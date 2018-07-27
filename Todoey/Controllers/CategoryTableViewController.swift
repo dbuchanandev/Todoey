@@ -8,6 +8,7 @@
 
 import UIKit
 import RealmSwift
+import ChameleonFramework
 
 class CategoryTableViewController: SwipeTableViewController {
     
@@ -24,8 +25,6 @@ class CategoryTableViewController: SwipeTableViewController {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
-        //Add a footer view to hide extra cells
-        self.tableView.tableFooterView = UIView()
         
         loadCategories()
         
@@ -54,10 +53,13 @@ class CategoryTableViewController: SwipeTableViewController {
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
         
         cell.textLabel?.text = categories?[indexPath.row].name ?? "No Categories Added Yet"
+        
+        //Random light bg color from Chameleon. If by some change the value is nil, use the hex value of another random color as the default value
+        cell.backgroundColor = UIColor(hexString: (categories?[indexPath.row].hexColor) ?? UIColor.init(randomFlatColorOf: .light).hexValue())
 
         return cell
     }
-    
+
 //    //Swipe to delete
 //    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
 //        return true
@@ -151,6 +153,7 @@ class CategoryTableViewController: SwipeTableViewController {
         
         if let indexPath = tableView.indexPathForSelectedRow {
             destinationVC.selectedCategory = categories?[indexPath.row]
+//            self.navigationController?.navigationBar.barTintColor = UIColor(hexString: (categories?[indexPath.row].hexColor)!)
         }
         
     }
@@ -199,6 +202,7 @@ class CategoryTableViewController: SwipeTableViewController {
             
             let newCategory = Category()
             newCategory.name = textField.text!
+            newCategory.hexColor = UIColor(randomFlatColorOf:.light).hexValue()
             
             self.save(category: newCategory)
         }

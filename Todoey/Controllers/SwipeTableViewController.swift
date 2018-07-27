@@ -8,12 +8,30 @@
 
 import UIKit
 import SwipeCellKit
+import ChameleonFramework
 
 class SwipeTableViewController: UITableViewController, SwipeTableViewCellDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        //Change cell height for all inherited cells
+        tableView.rowHeight = 80.0
+        
+        //Add a footer view to hide extra cells
+        self.tableView.tableFooterView = UIView()
+        
+        //remove cell separators for all inherited cells
+        self.tableView.separatorStyle = .none
+        
+        //set background color of footer view with random light flat color from Chameleon
+//        self.tableView.backgroundColor = ComplementaryFlatColorOf(UIColor.flatSkyBlue)
+        //self.tableView.backgroundColor = .flatSkyBlue
+        
+        self.navigationController?.hidesNavigationBarHairline = true
+        self.setStatusBarStyle(UIStatusBarStyleContrast)
+
+        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
