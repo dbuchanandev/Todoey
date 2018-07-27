@@ -16,6 +16,8 @@ class CategoryTableViewController: SwipeTableViewController {
     let realm = try! Realm()
     
     var categories: Results<Category>?
+    
+    let originalColorHex = FlatSkyBlue().hexValue()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,11 +30,33 @@ class CategoryTableViewController: SwipeTableViewController {
         
         loadCategories()
         
+        updateNavBar(withHexCode: originalColorHex)
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        //updateNavBar(withHexCode: originalColorHex)
+        self.navigationController?.hidesNavigationBarHairline = true
+        self.setStatusBarStyle(UIStatusBarStyleContrast)
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    //MARK: Nav Bar Update Methods
+    func updateNavBar(withHexCode colorHexCode: String) {
+        guard let navController = navigationController else {
+            fatalError()
+        }
+        
+        guard let navBarColor = UIColor(hexString: colorHexCode) else {fatalError()}
+        
+        navController.navigationBar.barTintColor = navBarColor
+        navController.navigationBar.tintColor = ContrastColorOf(navBarColor, returnFlat: true)
+        navController.navigationBar.largeTitleTextAttributes = [NSAttributedStringKey.foregroundColor: ContrastColorOf(navBarColor, returnFlat: true)]
+        tableView.backgroundColor = navBarColor
     }
 
     // MARK: - Table view data source
@@ -52,10 +76,12 @@ class CategoryTableViewController: SwipeTableViewController {
         
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
         
-        cell.textLabel?.text = categories?[indexPath.row].name ?? "No Categories Added Yet"
-        
-        //Random light bg color from Chameleon. If by some change the value is nil, use the hex value of another random color as the default value
-        cell.backgroundColor = UIColor(hexString: (categories?[indexPath.row].hexColor) ?? UIColor.init(randomFlatColorOf: .light).hexValue())
+        if let category = categories?[indexPath.row] {
+            cell.textLabel?.text = category.name
+            guard let categoryColor = UIColor(hexString: category.hexColor) else {fatalError()}
+            cell.backgroundColor = categoryColor
+            cell.textLabel?.textColor = ContrastColorOf(categoryColor, returnFlat: true)
+        }
 
         return cell
     }
@@ -137,13 +163,14 @@ class CategoryTableViewController: SwipeTableViewController {
     
     //MARK: TableView Delegate Methods
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-
+        
         //If no category exist and a row is tapped, show alert to add a new category
         //else, segue to the selected category list
         if categories?.count == 0 {
             addNewCategory()
         } else {
             performSegue(withIdentifier: "goToItems", sender: self)
+            tableView.deselectRow(at: indexPath, animated: false)
         }
         
     }

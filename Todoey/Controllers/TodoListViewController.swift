@@ -22,20 +22,48 @@ class TodoListViewController: SwipeTableViewController {
         }
     }
     
+    @IBOutlet weak var searchBar: UISearchBar!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         //Add a footer view to hide extra cells
         self.tableView.tableFooterView = UIView()
-        //set nav bar title to match selected category
-        self.navigationBar.title = selectedCategory?.name
         
-        //set nav items color
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        //set nav bar color
+        guard let colorHex = selectedCategory?.hexColor else {
+            fatalError()
+        }
+        updateNavBar(withHexCode: colorHex)
+        searchBar.barTintColor = UIColor(hexString: colorHex)
 
+        navigationController?.hidesNavigationBarHairline = true
+        setStatusBarStyle(UIStatusBarStyleContrast)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        updateNavBar(withHexCode: FlatSkyBlue().hexValue())
     }
     
     @IBOutlet weak var navigationBar: UINavigationItem!
     
+    //MARK: - Nav Bar Update Methods
+    func updateNavBar(withHexCode colorHexCode: String) {
+        guard let navController = navigationController else {
+            fatalError()
+        }
+        
+        guard let navBarColor = UIColor(hexString: colorHexCode) else {fatalError()}
+        
+        navController.navigationBar.barTintColor = navBarColor
+        navController.navigationBar.tintColor = ContrastColorOf(navBarColor, returnFlat: true)
+        navController.navigationBar.largeTitleTextAttributes = [NSAttributedStringKey.foregroundColor: ContrastColorOf(navBarColor, returnFlat: true)]
+        tableView.backgroundColor = navBarColor
+        title = selectedCategory?.name
+    }
 
 //    override func didReceiveMemoryWarning() {
 //        super.didReceiveMemoryWarning()

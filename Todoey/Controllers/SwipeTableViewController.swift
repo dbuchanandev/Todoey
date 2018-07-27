@@ -27,11 +27,7 @@ class SwipeTableViewController: UITableViewController, SwipeTableViewCellDelegat
         //set background color of footer view with random light flat color from Chameleon
 //        self.tableView.backgroundColor = ComplementaryFlatColorOf(UIColor.flatSkyBlue)
         //self.tableView.backgroundColor = .flatSkyBlue
-        
-        self.navigationController?.hidesNavigationBarHairline = true
-        self.setStatusBarStyle(UIStatusBarStyleContrast)
 
-        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
