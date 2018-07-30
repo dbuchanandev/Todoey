@@ -40,29 +40,21 @@ class TodoListViewController: SwipeTableViewController {
         updateNavBar(withHexCode: colorHex)
         searchBar.barTintColor = UIColor(hexString: colorHex)
 
-        navigationController?.hidesNavigationBarHairline = true
-        setStatusBarStyle(UIStatusBarStyleContrast)
+        super.viewWillAppear(true)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         updateNavBar(withHexCode: FlatSkyBlue().hexValue())
+        self.navigationController?.setStatusBarStyle(UIStatusBarStyleContrast)
     }
     
     @IBOutlet weak var navigationBar: UINavigationItem!
     
     //MARK: - Nav Bar Update Methods
-    func updateNavBar(withHexCode colorHexCode: String) {
-        guard let navController = navigationController else {
-            fatalError()
-        }
-        
-        guard let navBarColor = UIColor(hexString: colorHexCode) else {fatalError()}
-        
-        navController.navigationBar.barTintColor = navBarColor
-        navController.navigationBar.tintColor = ContrastColorOf(navBarColor, returnFlat: true)
-        navController.navigationBar.largeTitleTextAttributes = [NSAttributedStringKey.foregroundColor: ContrastColorOf(navBarColor, returnFlat: true)]
-        tableView.backgroundColor = navBarColor
+    override func updateNavBar(withHexCode colorHexCode: String) {
+        let hexColor = colorHexCode
         title = selectedCategory?.name
+        super.updateNavBar(withHexCode: hexColor)
     }
 
 //    override func didReceiveMemoryWarning() {

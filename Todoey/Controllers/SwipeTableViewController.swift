@@ -24,15 +24,29 @@ class SwipeTableViewController: UITableViewController, SwipeTableViewCellDelegat
         //remove cell separators for all inherited cells
         self.tableView.separatorStyle = .none
         
-        //set background color of footer view with random light flat color from Chameleon
-//        self.tableView.backgroundColor = ComplementaryFlatColorOf(UIColor.flatSkyBlue)
-        //self.tableView.backgroundColor = .flatSkyBlue
-
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        
+    }
+    
+    func updateNavBar(withHexCode colorHexCode: String) {guard let navController = navigationController else {
+        fatalError()
+        }
+        
+        guard let navBarColor = UIColor(hexString: colorHexCode) else {fatalError()}
+        
+        navController.navigationBar.barTintColor = navBarColor
+        navController.navigationBar.tintColor = ContrastColorOf(navBarColor, returnFlat: true)
+        navController.navigationBar.largeTitleTextAttributes = [NSAttributedStringKey.foregroundColor: ContrastColorOf(navBarColor, returnFlat: true)]
+        tableView.backgroundColor = navBarColor
+        self.navigationController?.hidesNavigationBarHairline = true
+        self.navigationController?.setStatusBarStyle(UIStatusBarStyleContrast)
     }
     
     //MARK: - TableView Datasource Methods
