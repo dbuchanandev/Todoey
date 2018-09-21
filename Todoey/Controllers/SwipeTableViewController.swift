@@ -43,7 +43,7 @@ class SwipeTableViewController: UITableViewController, SwipeTableViewCellDelegat
         
         navController.navigationBar.barTintColor = navBarColor
         navController.navigationBar.tintColor = ContrastColorOf(navBarColor, returnFlat: true)
-        navController.navigationBar.largeTitleTextAttributes = [NSAttributedStringKey.foregroundColor: ContrastColorOf(navBarColor, returnFlat: true)]
+        navController.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: ContrastColorOf(navBarColor, returnFlat: true)]
         tableView.backgroundColor = navBarColor
         self.navigationController?.hidesNavigationBarHairline = true
         self.navigationController?.setStatusBarStyle(UIStatusBarStyleContrast)

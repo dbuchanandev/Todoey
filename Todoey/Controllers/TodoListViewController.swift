@@ -86,10 +86,10 @@ class TodoListViewController: SwipeTableViewController {
                 cell.backgroundColor = cellColor
                 //set strikethrough and change the color to grey if the item is done
                 if item.done {
-                    cell.textLabel?.attributedText = NSAttributedString(string: item.title, attributes: [NSAttributedStringKey.foregroundColor : UIColor.gray, NSAttributedStringKey.strikethroughStyle: 1])
+                    cell.textLabel?.attributedText = NSAttributedString(string: item.title, attributes: [NSAttributedString.Key.foregroundColor : UIColor.gray, NSAttributedString.Key.strikethroughStyle: 1])
                 } else {
                     // ContrastColorOf used for cell text color
-                    cell.textLabel?.attributedText = NSAttributedString(string: item.title, attributes: [NSAttributedStringKey.foregroundColor : ContrastColorOf(cellColor, returnFlat: true), NSAttributedStringKey.strikethroughStyle: 0])
+                    cell.textLabel?.attributedText = NSAttributedString(string: item.title, attributes: [NSAttributedString.Key.foregroundColor : ContrastColorOf(cellColor, returnFlat: true), NSAttributedString.Key.strikethroughStyle: 0])
                 }
             }
         }
@@ -171,6 +171,7 @@ class TodoListViewController: SwipeTableViewController {
             }
             
             self.tableView.reloadData()
+            
             
         }
         
